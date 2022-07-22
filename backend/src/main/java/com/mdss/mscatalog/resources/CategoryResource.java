@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mdss.mscatalog.entities.Category;
+import com.mdss.mscatalog.dto.CategoryDto;
 import com.mdss.mscatalog.services.CategoryService;
 
 @RestController
@@ -19,8 +19,8 @@ public class CategoryResource {
 	private CategoryService service;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Category>> findAll(){
-		List<Category> list = service.findAll();
+	public ResponseEntity<List<CategoryDto>> findAll(){
+		List<CategoryDto> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
