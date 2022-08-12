@@ -21,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.mdss.mscatalog.dto.UserDto;
 import com.mdss.mscatalog.dto.UserInsertDto;
+import com.mdss.mscatalog.dto.UserUpdateDto;
 import com.mdss.mscatalog.services.UserService;
 
 @RestController
@@ -51,9 +52,9 @@ public class UserResource {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<UserDto> update(@Valid @PathVariable Long id, @RequestBody UserDto dto){
-		dto = service.update(id,dto);
-		return ResponseEntity.ok().body(dto);
+	public ResponseEntity<UserDto> update(@Valid @PathVariable Long id, @RequestBody UserUpdateDto dto){
+		UserDto newDto = service.update(id,dto);
+		return ResponseEntity.ok().body(newDto);
 	}
 	
 	@DeleteMapping(value = "/{id}")

@@ -1,5 +1,8 @@
 package com.mdss.mscatalog.dto;
 
+import com.mdss.mscatalog.services.validation.UserInsertValid;
+
+@UserInsertValid
 public class UserInsertDto extends UserDto{
 
 	private static final long serialVersionUID = 1L;
