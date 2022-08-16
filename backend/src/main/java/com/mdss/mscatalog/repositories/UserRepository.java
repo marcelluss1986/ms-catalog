@@ -6,5 +6,5 @@ import com.mdss.mscatalog.entities.User;
 
 public interface UserRepository extends JpaRepository<User, Long>{
 
-	User findByEmail(String email);
+	public User findByEmail(String email);
 }

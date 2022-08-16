@@ -53,7 +53,7 @@ public class ProductService {
 	
 	@Transactional
 	public ProductDto update(Long id, ProductDto dto) {
-		try{Product entity = repository.getReferenceById(id);
+		try{Product entity = repository.getOne(id);
 		copyDtoToEntity(dto, entity);
 		entity = repository.save(entity);
 		return new ProductDto(entity);
@@ -80,7 +80,7 @@ public class ProductService {
 		
 		entity.getCategories().clear();
 		for(CategoryDto catDto: dto.getCategories()) {
-			Category category = categoryRepository.getReferenceById(catDto.getId());
+			Category category = categoryRepository.getOne(catDto.getId());
 			entity.getCategories().add(category);
 		}
 	}

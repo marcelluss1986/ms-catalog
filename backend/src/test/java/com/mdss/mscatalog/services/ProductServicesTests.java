@@ -59,10 +59,10 @@ public class ProductServicesTests {
 		Mockito.when(repository.save(ArgumentMatchers.any())).thenReturn(product);
 		Mockito.when(repository.findById(existingId)).thenReturn(Optional.of(product));
 		Mockito.when(repository.findById(notExistingId)).thenReturn(Optional.empty());
-		Mockito.when(repository.getReferenceById(existingId)).thenReturn(product);
-		Mockito.when(repository.getReferenceById(notExistingId)).thenThrow(ResourceNotFoundException.class);
-		Mockito.when(categoryRepository.getReferenceById(existingId)).thenReturn(category);
-		Mockito.when(categoryRepository.getReferenceById(notExistingId)).thenThrow(ResourceNotFoundException.class);
+		Mockito.when(repository.getOne(existingId)).thenReturn(product);
+		Mockito.when(repository.getOne(notExistingId)).thenThrow(ResourceNotFoundException.class);
+		Mockito.when(categoryRepository.getOne(existingId)).thenReturn(category);
+		Mockito.when(categoryRepository.getOne(notExistingId)).thenThrow(ResourceNotFoundException.class);
 		
 		
 		Mockito.doNothing().when(repository).deleteById(existingId);

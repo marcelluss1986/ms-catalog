@@ -4,11 +4,16 @@ import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +30,9 @@ import com.mdss.mscatalog.services.exceptions.DatabaseException;
 import com.mdss.mscatalog.services.exceptions.ResourceNotFoundException;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService{
+	
+	private static Logger logger = LoggerFactory.getLogger(UserService.class);
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -60,7 +67,7 @@ public class UserService {
 	
 	@Transactional
 	public UserDto update(Long id, UserUpdateDto dto) {
-		try{User entity = repository.getReferenceById(id);
+		try{User entity = repository.getOne(id);
 		copyEntity(dto, entity);
 		return new UserDto(entity);
 		}catch(EntityNotFoundException e) {
@@ -84,9 +91,19 @@ public class UserService {
 		
 		entity.getRoles().clear();
 		for (RoleDto roleDto: dto.getRoles()) {
-			Role role = roleRepository.getReferenceById(roleDto.getId());
+			Role role = roleRepository.getOne(roleDto.getId());
 			entity.getRoles().add(role);
 		}
-		entity = repository.save(entity);
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = repository.findByEmail(username);
+		if(user == null) {
+			logger.error("User not found: " + username);
+			throw new UsernameNotFoundException(username);
+		}
+		logger.info("User found: " + username);
+		return user;
 	}
 }
